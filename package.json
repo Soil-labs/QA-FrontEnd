@@ -1,0 +1,25 @@
+{
+  "name": "Eden",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test:functinality": "npx playwright test tests/functinality/",
+    "test:end2end": "npx playwright test tests/end2end",
+    "test:hr": "npx playwright test tests/HR/",
+    "test:talent": "npx playwright test tests/Talent/",
+    "lint:format": "pnpm exec prettier  --log-level error --write \"./**/*.{ts,md,json}\" "
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.40.1",
+    "@types/node": "^20.10.5",
+    "eslint-plugin-prettier": "^5.1.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "prettier": "^3.1.1"
+  }
+}
