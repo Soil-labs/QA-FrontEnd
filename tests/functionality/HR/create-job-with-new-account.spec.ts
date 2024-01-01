@@ -11,34 +11,6 @@ import { CARD_DETAILS } from 'data/testData/payment';
 
 
 test.describe(`create job with new account`, async () => {
-  test.beforeAll(async ({ }) => {
-    const browser = await firefox.launch();
-    const page = await browser.newPage();
-    const context = page.context();
-    const loginPage = new LoginPage(page);
-    const setup = new Steup(page);
-    const jobsPage = new JobsPage(page);
-
-    await test.step(`login to eden as HR`, async () => {
-      await page.goto('/');
-      await loginPage.clickLogin();
-      const memberId = await loginPage.loginToApplication(
-        process.env.HR_EMAIL_1,
-        process.env.HR_PASSWORD_1
-      );
-      console.log(memberId);
-      await page.waitForLoadState('domcontentloaded');
-    });
-
-    await test.step(`setup company and subscribe`, async () => {
-      await jobsPage.clickOnPostMaigcJob();
-      await setup.clickOnSubscribe();
-      await setup.fillCompanyProfileInfo('MyCompany2024', 'Description2024');
-      await setup.clickOnCheckOut();
-      await setup.completePayment(CARD_DETAILS, process.env.PROMO_CODE);
-      await context.clearCookies();
-    });
-  });
 
   test(`create job -> publish -> auto conifigure`, async ({
     page,

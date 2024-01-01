@@ -40,17 +40,17 @@ export default class Steup {
 
     // Payment
     this.addPromotionCode = page.getByPlaceholder('Add promotion code');
-    this.emailInput = page.locator('#email');
+    this.emailInput = page.locator('input#email');
     this.applyBtn = page.getByRole('button', { name: 'Apply' });
-    this.cardNumber = page.locator('#cardNumber');
-    this.cardExpiry = page.locator('#cardExpiry');
-    this.cvcNumber = page.locator('#cardCvc');
-    this.billingName = page.locator('#billingName');
+    this.cardNumber = page.locator('input#cardNumber');
+    this.cardExpiry = page.locator('input#cardExpiry');
+    this.cvcNumber = page.locator('input#cardCvc');
+    this.billingName = page.locator('input#billingName');
     this.country = page.locator("//select[@aria-label='Country or region']");
-    this.zipCode = page.locator('#billingPostalCode');
-    this.city = page.locator('#billingLocality');
-    this.addressLine1 = page.locator('#billingAddressLine1');
-    this.stripePassCheckBox = page.locator('#enableStripePass');
+    this.zipCode = page.locator('input#billingPostalCode');
+    this.city = page.locator('input#billingLocality');
+    this.addressLine1 = page.locator('input#billingAddressLine1');
+    this.stripePassCheckBox = page.locator('input#enableStripePass');
     this.payButton = page.locator("//button[@type='submit']");
   }
 
@@ -59,10 +59,10 @@ export default class Steup {
     await this.addPromotionCode.click();
     await this.addPromotionCode.fill(promoCode);
     await this.applyBtn.click();
-    await expect(this.addressLine1).toBeVisible();
+    await this.page.waitForTimeout(5000);
     await this.emailInput.fill(email);
-    await this.billingName.fill(billingName);
     await this.country.selectOption(country);
+    await this.billingName.pressSequentially(billingName);
     await this.city.fill(city);
     await this.addressLine1.fill(addressLine1);
     await this.payButton.click({ delay: 3000 });

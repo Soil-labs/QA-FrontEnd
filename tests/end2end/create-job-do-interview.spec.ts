@@ -2,17 +2,15 @@ import { test } from '@fixtures/base.fixture';
 import { HEADERS } from 'data/pageData/HR/configurejob.data';
 import { EDEN_INSIGHTS_TAB_HEADERS } from 'data/pageData/Talent/interview.data';
 import { JOB_DETAILS } from 'data/testData/HR/jobs.data';
-import { CARD_DETAILS } from 'data/testData/payment';
 
 test(`create job as HR and do interview as Talent`, async ({
   page,
   context,
   loginPage,
-  setup,
   dashboardPage,
-  jobsPage,
   configureJobPage,
-  interviewPage
+  interviewPage,
+  jobsPage
 }) => {
   // Meta Information
   test.info().annotations.push({
@@ -36,17 +34,10 @@ test(`create job as HR and do interview as Talent`, async ({
     await page.waitForLoadState('domcontentloaded');
   });
 
-  await test.step(`setup company and subscribe`, async () => {
+  await test.step(`navigate to dashboard and launch an opportunity`, async () => {
     await jobsPage.clickOnPostMaigcJob();
-    await setup.clickOnSubscribe();
-    await setup.fillCompanyProfileInfo('MyCompany2024', 'Description2024');
-    await setup.clickOnCheckOut();
-    await setup.completePayment(CARD_DETAILS, process.env.PROMO_CODE);
-  });
-
-  await test.step(`launch an opportunity`, async () => {
     await dashboardPage.actOnNavigationBar('expand');
-    await dashboardPage.clickOnAddOpportunity('main');
+    await dashboardPage.clickOnAddOpportunity();
     await dashboardPage.launchOpportunity(
       JOB_DETAILS.job1.title,
       JOB_DETAILS.job1.description
@@ -78,7 +69,6 @@ test(`create job as HR and do interview as Talent`, async ({
     );
   });
 
-
   await test.step(`start the interview process`,
     async () => {
       await interviewPage.clickOnNextBtn();
@@ -100,5 +90,24 @@ test(`create job as HR and do interview as Talent`, async ({
     async () => {
       await interviewPage.submitApplication();
       await interviewPage.verifyDoneTab(process.env.TALENT_EMAIL_1);
+      await context.clearCookies();
     })
+
+  await test.step(`login to eden as HR`, async () => {
+    await page.goto('/');
+    await loginPage.clickLogin();
+    const memberId = await loginPage.loginToApplication(
+      process.env.HR_EMAIL_1,
+      process.env.HR_PASSWORD_1
+    );
+    console.log(memberId);
+    await page.waitForLoadState('domcontentloaded');
+  });
+
+  await test.step(`navigate to dashboard and delete the job`, async () => {
+    await jobsPage.clickOnPostMaigcJob();
+    await dashboardPage.actOnNavigationBar('expand');
+    await dashboardPage.selectOptionFromThreeDots('Delete opportunity');
+    await dashboardPage.verifyJobVisibility(JOB_DETAILS.job1.title, 'Deleted');
+  });
 });

@@ -3,7 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 require('dotenv').config();
 
 export default defineConfig({
-  globalSetup: require.resolve('./setup'),
+  globalSetup: require.resolve('./global-setup'),
   testDir: './tests',
   timeout: 240 * 1000,
   expect: {

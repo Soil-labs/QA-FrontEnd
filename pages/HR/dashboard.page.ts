@@ -32,13 +32,17 @@ export default class DashboardPage {
     this.linkInputField = page.locator('input[type=text]');
 
     // Navigation
-    this.expandIcon = page.getByRole('navigation').getByRole('img').first();
+    this.expandIcon = page.getByRole('navigation').locator('div > svg').first();
   }
 
-  async clickOnAddOpportunity(option: 'main' | 'navigation' = 'navigation') {
-    option == 'main'
-      ? await this.addOpportunityBtn.nth(1).click()
-      : await this.addOpportunityBtn.nth(0).click();
+  async clickOnAddOpportunity() {
+    await this.page.waitForSelector("img[alt=avatar]")
+    if (await this.addOpportunityBtn.nth(1).isVisible()) {
+      await this.addOpportunityBtn.nth(1).click()
+    }
+    else {
+      await this.addOpportunityBtn.nth(0).click();
+    }
   }
 
   async launchOpportunity(title: string, description: string) {

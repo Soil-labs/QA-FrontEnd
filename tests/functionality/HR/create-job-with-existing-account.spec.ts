@@ -84,26 +84,26 @@ test.describe('HR : Create Job with existing account', async () => {
       await dashboardPage.actOnNavigationBar('expand');
       await dashboardPage.clickOnAddOpportunity();
       await dashboardPage.launchOpportunity(
-        JOB_DETAILS.job1.title,
-        JOB_DETAILS.job1.description
+        JOB_DETAILS.job2.title,
+        JOB_DETAILS.job2.description
       );
     });
 
     await test.step(`configure and save as draft`, async () => {
-      await configureJobPage.validatePage(JOB_DETAILS.job1.title, HEADERS);
+      await configureJobPage.validatePage(JOB_DETAILS.job2.title, HEADERS);
       await configureJobPage.configureJob();
       await configureJobPage.saveAsDraft('auto');
     });
 
     await test.step(`verify job saved as draft`, async () => {
       await dashboardPage.actOnNavigationBar('expand');
-      await dashboardPage.verifyJobVisibility(JOB_DETAILS.job1.title, 'Not Published');
+      await dashboardPage.verifyJobVisibility(JOB_DETAILS.job2.title, 'Not Published');
       await dashboardPage.selectOptionFromThreeDots('Configure Job Page');
     });
 
     await test.step(`delete the job`, async () => {
       await dashboardPage.selectOptionFromThreeDots('Delete opportunity');
-      await dashboardPage.verifyJobVisibility(JOB_DETAILS.job1.title, 'Deleted');
+      await dashboardPage.verifyJobVisibility(JOB_DETAILS.job2.title, 'Deleted');
     });
   });
 })
