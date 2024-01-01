@@ -75,7 +75,14 @@ export default class DashboardPage {
 
   async selectOptionFromThreeDots(option: threeDotsOptions) {
     await this.threeDotsIcon.click();
-    await this.page.getByText(option).click();
+    if (option == 'Delete opportunity') {
+      const responsePromise = this.page.waitForResponse(process.env.GRAPHQL_ENDPOINT);
+      await this.page.getByText(option).click();
+      const response = await responsePromise;
+      expect(response.status()).toBe(200);
+    } else {
+      await this.page.getByText(option).click();
+    }
     await this.page.waitForTimeout(2500);
   }
 }

@@ -1,6 +1,6 @@
 import { APIRequestContext, expect } from '@playwright/test';
 
-export const deleteUser = async (request: APIRequestContext, memberId: string) => {
+export const deleteUserAPI = async (request: APIRequestContext, memberId: string) => {
   const response = await request.post(`${process.env.GRAPHQL_ENDPOINT}`, {
     data: {
       query: `mutation {deleteMember(fields: {memberID: ${memberId} }) {_id discordName}}`,

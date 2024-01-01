@@ -17,10 +17,10 @@ export default class LoginPage {
   }
 
   async loginToApplication(email: string, password: string) {
-    await this.emailInput.pressSequentially(email, { delay: 500 });
+    await this.emailInput.pressSequentially(email, { delay: 250 });
     await this.page.keyboard.press('Enter');
     await expect(this.passwordInput).toBeVisible({ timeout: 60000 });
-    await this.passwordInput.pressSequentially(password, { delay: 500 });
+    await this.passwordInput.pressSequentially(password, { delay: 250 });
     const responsePromise = this.page.waitForResponse(process.env.GRAPHQL_ENDPOINT);
     await this.page.keyboard.press('Enter');
     const response = await responsePromise;

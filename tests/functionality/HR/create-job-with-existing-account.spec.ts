@@ -4,7 +4,7 @@ import { TOASTER_MESSAGES } from 'data/pageData/toasterMessages';
 import { HEADERS } from 'data/pageData/HR/configurejob.data';
 import { JOB_DETAILS } from 'data/testData/HR/jobs.data';
 
-test.describe('HR : Create Job', async () => {
+test.describe('HR : Create Job with existing account', async () => {
 
   test.beforeEach(async ({ page, loginPage }) => {
     await test.step(`login to eden as HR`, async () => {
@@ -49,7 +49,7 @@ test.describe('HR : Create Job', async () => {
     await test.step(`configure and publish`, async () => {
       await configureJobPage.validatePage(JOB_DETAILS.job1.title, HEADERS);
       await configureJobPage.configureJob();
-      await configureJobPage.publishJob();
+      await configureJobPage.publishJob('auto');
     });
 
     await test.step(`verify job published`, async () => {
@@ -70,7 +70,7 @@ test.describe('HR : Create Job', async () => {
     });
   });
 
-  test(`verify create job  funcationality`, async ({
+  test(`verify create job and save draft funcationality`, async ({
     dashboardPage,
     jobsPage,
     configureJobPage,
@@ -92,7 +92,7 @@ test.describe('HR : Create Job', async () => {
     await test.step(`configure and save as draft`, async () => {
       await configureJobPage.validatePage(JOB_DETAILS.job1.title, HEADERS);
       await configureJobPage.configureJob();
-      await configureJobPage.saveAsDraft();
+      await configureJobPage.saveAsDraft('auto');
     });
 
     await test.step(`verify job saved as draft`, async () => {

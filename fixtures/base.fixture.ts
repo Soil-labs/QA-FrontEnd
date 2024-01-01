@@ -4,6 +4,7 @@ import Steup from '../pages/setup.page';
 import DashboardPage from '@pages/HR/dashboard.page';
 import ConfigureJobPage from '@pages/HR/configureJob.page';
 import JobsPage from '@pages/HR/jobs.page';
+import InterviewPage from '@pages/Talent/interview.page';
 
 type PageObjects = {
   loginPage: LoginPage;
@@ -11,6 +12,7 @@ type PageObjects = {
   dashboardPage: DashboardPage;
   jobsPage: JobsPage;
   configureJobPage: ConfigureJobPage;
+  interviewPage: InterviewPage;
 };
 
 export const test = base.extend<PageObjects>({
@@ -33,6 +35,10 @@ export const test = base.extend<PageObjects>({
   configureJobPage: async ({ page }, use) => {
     await use(new ConfigureJobPage(page));
   },
+
+  interviewPage: async ({ page }, use) => {
+    await use(new InterviewPage(page));
+  }
 });
 
 export { expect } from '@playwright/test';

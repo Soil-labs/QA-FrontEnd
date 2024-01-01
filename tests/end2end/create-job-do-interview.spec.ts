@@ -1,5 +1,6 @@
 import { test } from '@fixtures/base.fixture';
 import { HEADERS } from 'data/pageData/HR/configurejob.data';
+import { EDEN_INSIGHTS_TAB_HEADERS } from 'data/pageData/Talent/interview.data';
 import { JOB_DETAILS } from 'data/testData/HR/jobs.data';
 import { CARD_DETAILS } from 'data/testData/payment';
 
@@ -11,6 +12,7 @@ test(`create job as HR and do interview as Talent`, async ({
   dashboardPage,
   jobsPage,
   configureJobPage,
+  interviewPage
 }) => {
   // Meta Information
   test.info().annotations.push({
@@ -42,13 +44,9 @@ test(`create job as HR and do interview as Talent`, async ({
     await setup.completePayment(CARD_DETAILS, process.env.PROMO_CODE);
   });
 
-  await test.step(`navigate to dashboard page`, async () => {
-    await jobsPage.clickOnPostMaigcJob();
-  });
-
   await test.step(`launch an opportunity`, async () => {
     await dashboardPage.actOnNavigationBar('expand');
-    await dashboardPage.clickOnAddOpportunity();
+    await dashboardPage.clickOnAddOpportunity('main');
     await dashboardPage.launchOpportunity(
       JOB_DETAILS.job1.title,
       JOB_DETAILS.job1.description
@@ -58,7 +56,7 @@ test(`create job as HR and do interview as Talent`, async ({
   await test.step(`configure and publish`, async () => {
     await configureJobPage.validatePage(JOB_DETAILS.job1.title, HEADERS);
     await configureJobPage.configureJob();
-    await configureJobPage.publishJob();
+    await configureJobPage.publishJob('auto');
   });
 
   await test.step(`verify job published`, async () => {
@@ -72,12 +70,35 @@ test(`create job as HR and do interview as Talent`, async ({
   });
 
   await test.step(`navigate to interview page and login as Talent`, async () => {
-    await page.goto(interviewLink);
+    await page.goto(interviewLink + "?panda=true");
     await loginPage.clickLogin();
     await loginPage.loginToApplication(
       process.env.TALENT_EMAIL_1,
       process.env.TALENT_PASSWORD_1
     );
-    await page.waitForTimeout(5000);
   });
+
+
+  await test.step(`start the interview process`,
+    async () => {
+      await interviewPage.clickOnNextBtn();
+      await interviewPage.verifyTabHeaders(EDEN_INSIGHTS_TAB_HEADERS);
+      await interviewPage.startInterview();
+    })
+
+  await test.step(`finish the interview`,
+    async () => {
+      await interviewPage.finishInterview();
+    })
+
+  await test.step(`fill final details`,
+    async () => {
+      await interviewPage.fillFinalDetails()
+    })
+
+  await test.step(`submit application and verify`,
+    async () => {
+      await interviewPage.submitApplication();
+      await interviewPage.verifyDoneTab(process.env.TALENT_EMAIL_1);
+    })
 });

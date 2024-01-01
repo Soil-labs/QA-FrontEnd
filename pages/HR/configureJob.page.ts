@@ -1,5 +1,6 @@
 import { Locator, Page, expect } from '@playwright/test';
 import { verifyToasterMessage } from '@utils/assertions';
+import { CONFIGURE_INTERVIEW_TABS, CONFIGURE_INTERVIEW_TAB_HEADERS } from 'data/pageData/HR/configurejob.data';
 import { TOASTER_MESSAGES } from 'data/pageData/toasterMessages';
 import { FUNDINGS, TAGS } from 'data/testData/HR/configurejob.data';
 
@@ -29,6 +30,11 @@ export default class ConfigureJobPage {
   configureManually: Locator;
   autoConfigure: Locator;
 
+  // Configure interview with AI
+  nextBtn: Locator;
+  saveAndContinueBtn: Locator;
+  letsMoveOnBtn: Locator;
+
   constructor(page: Page) {
     this.page = page;
 
@@ -57,6 +63,11 @@ export default class ConfigureJobPage {
     this.configureManually = page.getByRole('button', {
       name: 'Let me configure the AI-',
     });
+
+    // Configure interview with AI
+    this.nextBtn = page.getByRole('button', { name: 'Next' }).first();
+    this.saveAndContinueBtn = page.getByRole('button', { name: 'Continue' });
+    this.letsMoveOnBtn = page.getByRole('button', { name: 'Let\'s move on' });
   }
 
   async validatePage(jobTitle: string, pageHeaders: string[]) {
@@ -135,15 +146,47 @@ export default class ConfigureJobPage {
     expect(await removeIcon.count()).toBe(0);
   }
 
-  async saveAsDraft() {
+  async saveAsDraft(interviewConfig: 'auto' | 'manual') {
     await this.saveAsDraftBtn.click();
-    await this.autoConfigure.click();
+    (interviewConfig == 'manual') ?
+      await this.configureInterviewWithManually(
+        CONFIGURE_INTERVIEW_TABS, CONFIGURE_INTERVIEW_TAB_HEADERS
+      ) : await this.autoConfigure.click();
+    await this.page.waitForURL('**/dashboard/**');
   }
 
-  async publishJob() {
+  async publishJob(interviewConfig: 'auto' | 'manual') {
     await this.publishBtn.click();
     await this.page.getByRole('button', { name: "Let's do it!" }).click();
-    await this.autoConfigure.click();
+    (interviewConfig == 'manual') ?
+      await this.configureInterviewWithManually(
+        CONFIGURE_INTERVIEW_TABS, CONFIGURE_INTERVIEW_TAB_HEADERS
+      ) : await this.autoConfigure.click();
     await this.page.waitForURL('**/dashboard/**');
+  }
+
+  async configureInterviewWithManually(tabs: string[], headers: object) {
+    const totalTabs = tabs.length;
+    await this.configureManually.click();
+    for (let tabIndex = 0; tabIndex < totalTabs; tabIndex++) {
+      await expect(
+        this.page.getByText(tabs[tabIndex], { exact: true })
+      ).toBeVisible()
+      await this.verifyHeaders(headers[tabs[tabIndex]])
+      if (tabs[tabIndex] == 'EDEN CONVO') {
+        await this.nextBtn.click();
+        await this.letsMoveOnBtn.click();
+      } else {
+        await this.saveAndContinueBtn.click();
+      }
+    }
+  }
+
+  async verifyHeaders(headers: string[]) {
+    const totalHeaders = headers.length;
+    for (let headerIndex = 0; headerIndex < totalHeaders; headerIndex++) {
+      await this.page.getByText(headers[headerIndex], { exact: true }).click();
+      await expect(this.page.getByText(headers[headerIndex], { exact: true })).toBeVisible();
+    }
   }
 }
