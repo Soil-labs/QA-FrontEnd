@@ -1,7 +1,7 @@
 import { test } from '@fixtures/base.fixture';
-import { HEADERS } from 'data/pageData/HR/configurejob.data';
-import { EDEN_INSIGHTS_TAB_HEADERS } from 'data/pageData/Talent/interview.data';
-import { JOB_DETAILS } from 'data/testData/HR/jobs.data';
+import { HEADERS } from '@pageData/hr/configurejob.data';
+import { EDEN_INSIGHTS_TAB_HEADERS } from '@pageData/talent/interview.data';
+import { JOB_DETAILS } from 'data/testData/hr/jobs.data';
 
 test(`create job as HR and do interview as Talent`, async ({
   page,

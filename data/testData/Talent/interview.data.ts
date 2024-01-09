@@ -1,1 +1,1 @@
-export const INTERVIEW_LINK = `https://www.edenprotocol.app/interview/659246344a517700078c672b`
+export const INTERVIEW_LINK = `https://www.edenprotocol.app/interview/659d003adf09490007f05ad2`

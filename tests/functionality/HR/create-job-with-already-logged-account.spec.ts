@@ -1,8 +1,8 @@
 import { test } from '@fixtures/base.fixture';
 import { verifyToasterMessage } from '@utils/assertions';
 import { TOASTER_MESSAGES } from 'data/pageData/toasterMessages';
-import { HEADERS } from 'data/pageData/HR/configurejob.data';
-import { JOB_DETAILS } from 'data/testData/HR/jobs.data';
+import { HEADERS } from '@pageData/hr/configurejob.data';
+import { JOB_DETAILS } from 'data/testData/hr/jobs.data';
 
 test.use({ storageState: 'auth.json' });
 test.describe('HR : Create Job with already logged account', async () => {

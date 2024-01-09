@@ -3,6 +3,7 @@ import { Locator, Page, expect } from "@playwright/test";
 export default class InterviewPage {
   page: Page
 
+  uploadResumeBtn: Locator;
   nextBtn: Locator;
   checkBox: Locator;
   startInterviewBtn: Locator;
@@ -21,6 +22,7 @@ export default class InterviewPage {
   constructor(page: Page) {
     this.page = page;
 
+    this.uploadResumeBtn = page.getByText('Upload Your Resume');
     this.nextBtn = page.getByRole('button', { name: 'Next' });
     this.checkBox = page.getByRole('checkbox');
     this.startInterviewBtn = page.getByRole('button', { name: 'Start Interview' });
@@ -50,6 +52,15 @@ export default class InterviewPage {
     for (let i = 0; i < totalHeaders; i++) {
       await expect(this.page.getByRole('heading', { name: headers[i] })).toBeVisible();
     }
+  }
+
+  async uploadResume(path: string) {
+    const [fileChooser] = await Promise.all([
+      this.page.waitForEvent('filechooser'),
+      this.uploadResumeBtn.click()
+    ])
+    await fileChooser.setFiles(path);
+    await this.page.waitForSelector(`text="Eden is processing your Resume"`)
   }
 
   async startInterview() {

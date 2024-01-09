@@ -4,8 +4,8 @@
     "paths": {
       "@fixtures/*": ["fixtures/*"],
       "@pages/*": ["pages/*"],
-      "@pageData/*": ["data/pagedata/*"],
-      "@testData/*": ["data/testdata/*"],
+      "@pageData/*": ["data/pageData/*"],
+      "@testData/*": ["data/testData/*"],
       "@utils/*": ["utils/*"]
     }
   }

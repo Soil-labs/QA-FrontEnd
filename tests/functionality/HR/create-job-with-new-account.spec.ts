@@ -4,9 +4,9 @@ import LoginPage from '@pages/login.page';
 import Steup from '@pages/setup.page';
 import { firefox } from '@playwright/test';
 import { verifyToasterMessage } from '@utils/assertions';
-import { HEADERS } from 'data/pageData/HR/configurejob.data';
+import { HEADERS } from '@pageData/hr/configurejob.data';
 import { TOASTER_MESSAGES } from 'data/pageData/toasterMessages';
-import { JOB_DETAILS } from 'data/testData/HR/jobs.data';
+import { JOB_DETAILS } from 'data/testData/hr/jobs.data';
 import { CARD_DETAILS } from 'data/testData/payment';
 
 

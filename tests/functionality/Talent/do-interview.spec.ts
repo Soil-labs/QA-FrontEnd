@@ -1,16 +1,15 @@
 import { test } from '@fixtures/base.fixture';
-import { HEADERS } from 'data/pageData/HR/configurejob.data';
-import { EDEN_INSIGHTS_TAB_HEADERS } from 'data/pageData/Talent/interview.data';
-import { JOB_DETAILS } from 'data/testData/HR/jobs.data';
-import { INTERVIEW_LINK } from 'data/testData/Talent/interview.data';
-import { CARD_DETAILS } from 'data/testData/payment';
+import { EDEN_INSIGHTS_TAB_HEADERS } from '@pageData/talent/interview.data';
+import { JOB_DETAILS } from '@testData/hr/jobs.data';
+import { INTERVIEW_LINK } from '@testData/talent/interview.data';
+import { generateResume } from '@utils/resumeGenerator';
+import fs = require("fs");
 
 test(`create job as HR and do interview as Talent`, async ({
   page,
   loginPage,
   interviewPage
 }) => {
-
   await test.step(`navigate to interview page and login`,
     async () => {
       await page.goto(INTERVIEW_LINK + "?panda=true")
@@ -20,10 +19,16 @@ test(`create job as HR and do interview as Talent`, async ({
         process.env.TALENT_PASSWORD_1
       );
     })
+  await test.step(`upload resume`,
+    async () => {
+      const path = 'assets/resume.pdf'; 
+      !(fs.existsSync(path)) &&
+        await generateResume('A', JOB_DETAILS.job2, path);
+      await interviewPage.uploadResume(path)
+    })
 
   await test.step(`start the interview process`,
     async () => {
-      await interviewPage.clickOnNextBtn();
       await interviewPage.verifyTabHeaders(EDEN_INSIGHTS_TAB_HEADERS);
       await interviewPage.startInterview();
     })

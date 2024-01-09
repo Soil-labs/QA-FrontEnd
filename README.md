@@ -18,6 +18,7 @@ Eden automation tests are written using **[Playwright](https://playwright.dev/)*
   ```bash
   npm install
   ```
+  **Note:** If you face any issue regarding module staff please run `npm install playwright-core` and try again.
 
   3. Set environment variables in `.env` file (refer to the `.env.example`)
   

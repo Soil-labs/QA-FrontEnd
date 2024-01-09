@@ -1,8 +1,8 @@
 import { Locator, Page, expect } from '@playwright/test';
 import { verifyToasterMessage } from '@utils/assertions';
-import { CONFIGURE_INTERVIEW_TABS, CONFIGURE_INTERVIEW_TAB_HEADERS } from 'data/pageData/HR/configurejob.data';
+import { CONFIGURE_INTERVIEW_TABS, CONFIGURE_INTERVIEW_TAB_HEADERS } from '@pageData/hr/configurejob.data';
 import { TOASTER_MESSAGES } from 'data/pageData/toasterMessages';
-import { FUNDINGS, SOCIAL_LINKS, TAGS } from 'data/testData/HR/configurejob.data';
+import { FUNDINGS, SOCIAL_LINKS, TAGS } from 'data/testData/hr/configurejob.data';
 
 export default class ConfigureJobPage {
   page: Page;
